@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "./components/common/SEO/SEO"
 import "./App.css";
 
 function App() {

@@ -1,17 +1,18 @@
 import axios from "axios";
+
 const BASE_URL = "https://api.themoviedb.org/3";
 const REACT_API_KEY = "YOUR_KEY";
+
 const tmdb = axios.create({
   baseURL: process.env.BASE_URL || BASE_URL,
   params: {
     api_key: process.env.REACT_API_KEY || REACT_API_KEY,
   },
 });
-console.log("keys: ", process.env.BASE_URL, process.env.REACT_API_KEY);
 
-export const searchMovie = (query, page = 1) => {
+export const searchMovie = (query, page = 1, filters = {}) => {
   return tmdb.get("/search/movie", {
-    params: { query, page },
+    params: { query, page, ...filters },
   });
 };
 
@@ -35,7 +36,4 @@ export const fetchTopRatedMovies = () => {
   return tmdb.get("/movie/top_rated", {
     params: { page: 1 },
   });
-  // .then(response => {
-  // return response.data.results.slice(0, 3);
-  // });
 };

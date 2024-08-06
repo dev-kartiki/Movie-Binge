@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AddToFavorites from "./AddToFavorites";
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, removeFavorite, small }) => {
   const [showMore, setShowMore] = useState(false);
 
   const toggleShowMore = () => setShowMore(!showMore);
@@ -20,9 +21,9 @@ const MovieCard = ({ movie }) => {
         />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title text-white">{movie.title}</h5>
-          <div className="position-relative">
+          {!small && <div className="position-relative">
             <p
-              className={`card-text text-light ${showMore ? "" : "text-truncate"}`}
+              className={`card-text pb-2 text-light ${showMore ? "" : "text-truncate"}`}
               style={{
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -49,7 +50,7 @@ const MovieCard = ({ movie }) => {
                 Show less
               </button>
             )}
-          </div>
+          </div>}
           <p className="card-text text-light mt-auto">
             Rating: {movie.vote_average}
           </p>
@@ -57,6 +58,8 @@ const MovieCard = ({ movie }) => {
         <div className="card-footer bg-dark border-top border-light">
           <small className="text-light">
             {new Date(movie.release_date).toDateString()}
+            <AddToFavorites movie={movie} onRemoveFavorite={removeFavorite}/>
+            {movie.genres}
           </small>
         </div>
       </div>

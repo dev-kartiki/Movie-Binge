@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../components/AuthContext/AuthContext";
 
@@ -16,10 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const handleSubmit = async (
-    values,
-    { setSubmitting, setErrors, setStatus },
-  ) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Fetch existing users from JSON Server
       const response = await axios.get("http://localhost:5000/users");
@@ -34,23 +32,44 @@ const Login = () => {
 
       if (user) {
         // Handle existing user login logic
-        setStatus({ success: "User exists. Logging in..." });
+        Swal.fire({
+          title: 'Login Successful',
+          text: 'User exists. Logging in...',
+          icon: 'success',
+          timer: 3000,
+          showConfirmButton: false,
+        });
         auth.login(user);
         setTimeout(() => {
           navigate("/");
         }, 3000);
       } else {
         // Prompt to create a new account
-        setStatus({ error: "User does not exist. Please create an account." });
-        setTimeout(() => {
-          navigate("/create-account");
-        }, 3000);
+        Swal.fire({
+          title: 'User not found',
+          text: 'User does not exist. Please create an account.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Create Account',
+          confirmButtonColor: 'red',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/create-account");
+          }
+        });
       }
 
       setSubmitting(false);
     } catch (err) {
       setSubmitting(false);
-      setStatus({ error: "Failed to process request. Please try again." });
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to process request. Please try again.',
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: false,
+      });
       console.error(err);
     }
   };
@@ -67,7 +86,7 @@ const Login = () => {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
-                {({ isSubmitting, status }) => (
+                {({ isSubmitting }) => (
                   <Form>
                     <div className="form-group">
                       <label htmlFor="username">Username:</label>
@@ -104,16 +123,6 @@ const Login = () => {
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
-                    {status && status.success && (
-                      <div className="alert alert-info mt-3" role="alert">
-                        {status.success}
-                      </div>
-                    )}
-                    {status && status.error && (
-                      <div className="alert alert-danger mt-3" role="alert">
-                        {status.error}
-                      </div>
-                    )}
                   </Form>
                 )}
               </Formik>

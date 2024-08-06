@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { discoverMovie, searchMovie } from "../../services/api/tmdb";
 import Filters from "./Filters";
 import RegularList from "../common/Lists/RegularList";
@@ -25,10 +25,10 @@ const MovieSearch = () => {
 
   const searchMovies = async () => {
     try {
-      const response = await searchMovie(query, page);
+      const response = await searchMovie(query, page, debouncedFilters);
       if (response.data.results.length > 0) {
         setMovies((prevMovies) => [...prevMovies, ...response.data.results]);
-        setPage((prevPage) => prevPage + 1);
+        setHasMore(response.data.results.length > 0);
       } else {
         setHasMore(false);
       }
@@ -36,13 +36,14 @@ const MovieSearch = () => {
       console.error("Error fetching movies:", error);
     }
   };
+  
 
   const discoverMovies = async () => {
     try {
       const response = await discoverMovie(page, debouncedFilters);
       if (response.data.results.length > 0) {
         setMovies((prevMovies) => [...prevMovies, ...response.data.results]);
-        setPage((prevPage) => prevPage + 1);
+        setHasMore(response.data.results.length > 0);
       } else {
         setHasMore(false);
       }
@@ -73,6 +74,7 @@ const MovieSearch = () => {
     // Show "Back to Top" button when scrolled down 300px
     setShowBackToTop(scrollTop > 300);
 
+    // Load more movies when scrolled near bottom
     if (scrollTop + windowHeight >= documentHeight - 200 && hasMore) {
       setPage((prevPage) => prevPage + 1);
     }
@@ -89,20 +91,6 @@ const MovieSearch = () => {
       behavior: "smooth",
     });
   };
-
-  if (!movies) {
-    return (
-      <div className="text-center">
-        <div
-          className="spinner-border text-bg-dark"
-          style={{ width: "3rem", height: "3rem" }}
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mb-3 text-light bg-dark p-4 rounded">
@@ -129,16 +117,13 @@ const MovieSearch = () => {
           itemComponent={LargeMovieList}
         />
       </div>
-      <div className="text-center">
-        {hasMore && <div>Loading more movies...</div>}
-      </div>
       {showBackToTop && (
         <button
-          className="btn btn-outline-light position-fixed bottom-50 end-0 m-3"
+          className="btn btn-outline-light position-fixed bottom-50 w-auto end-0 m-3"
           onClick={scrollToTop}
-          aria-label="Back to top"
+          aria-label="Scroll up"
         >
-          Scroll up
+          ^
         </button>
       )}
     </div>

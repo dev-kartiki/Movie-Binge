@@ -1,10 +1,12 @@
 import React, { createContext, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("isLoggedIn"),
+    sessionStorage.getItem("isLoggedIn"),
   );
   const [role, setRole] = useState("");
   const [state, setState] = useState();
@@ -14,14 +16,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (user) => {
-    localStorage.setItem("isLoggedIn", true);
+    sessionStorage.setItem("isLoggedIn", true);
     sessionStorage.setItem("user", JSON.stringify(user));
-    setIsAuthenticated(localStorage.getItem("isLoggedIn"));
+    setIsAuthenticated(JSON.parse(sessionStorage.getItem('isLoggedIn'))||true);
   };
 
   const logout = () => {
     sessionStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("isLoggedIn");
+    navigate('/')
   };
 
   return (

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -18,21 +19,30 @@ const validationSchema = Yup.object({
 const CreateAccount = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (
-    values,
-    { setSubmitting, setErrors, setStatus },
-  ) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // POST request to store new user information
       await axios.post("http://localhost:5000/users", values);
-      setStatus({ success: "Account created successfully." });
+      Swal.fire({
+        title: 'Success',
+        text: 'Account created successfully.',
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false,
+      });
       setSubmitting(false);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (err) {
       setSubmitting(false);
-      setStatus({ error: "Failed to create account. Please try again." });
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to create account. Please try again.',
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: false,
+      });
       console.error(err);
     }
   };
@@ -41,7 +51,7 @@ const CreateAccount = () => {
     <div className="container d-flex justify-content-center align-items-center vh-100 ">
       <div className="row w-100">
         <div className="col-md-8 col-lg-6 col-xl-4 mx-auto">
-          <div className="card text-dark  shadow-lg">
+          <div className="card text-dark shadow-lg">
             <div className="card-body p-4">
               <h2 className="card-title text-center mb-4">Create Account</h2>
               <Formik
@@ -49,7 +59,7 @@ const CreateAccount = () => {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
-                {({ isSubmitting, status }) => (
+                {({ isSubmitting }) => (
                   <Form>
                     <div className="form-group">
                       <label htmlFor="username">Username:</label>
@@ -57,7 +67,7 @@ const CreateAccount = () => {
                         type="text"
                         id="username"
                         name="username"
-                        className="form-control  text-dark "
+                        className="form-control text-dark"
                       />
                       <ErrorMessage
                         name="username"
@@ -71,7 +81,7 @@ const CreateAccount = () => {
                         type="email"
                         id="email"
                         name="email"
-                        className="form-control  text-dark "
+                        className="form-control text-dark"
                       />
                       <ErrorMessage
                         name="email"
@@ -85,7 +95,7 @@ const CreateAccount = () => {
                         type="password"
                         id="password"
                         name="password"
-                        className="form-control  text-dark "
+                        className="form-control text-dark"
                       />
                       <ErrorMessage
                         name="password"
@@ -100,16 +110,6 @@ const CreateAccount = () => {
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
-                    {status && status.success && (
-                      <div className="alert alert-info mt-3" role="alert">
-                        {status.success}
-                      </div>
-                    )}
-                    {status && status.error && (
-                      <div className="alert alert-danger mt-3" role="alert">
-                        {status.error}
-                      </div>
-                    )}
                   </Form>
                 )}
               </Formik>

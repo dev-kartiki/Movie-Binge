@@ -73,12 +73,13 @@ const Filters = ({ onChange }) => {
 
   const handleClearFilters = () => {
     formik.resetForm();
+    onChange({}); // Clear filters in the parent component
   };
 
   return (
     <div>
       <button
-        className="btn btn-outline-info"
+        className="btn btn-outline-light"
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#filtersModal"
@@ -140,7 +141,7 @@ const Filters = ({ onChange }) => {
                   <h4 className="font-semibold mb-2">Year Range</h4>
                   <div className="d-flex align-items-center">
                     <input
-                      type="number"
+                      type="date"
                       name="yearMin"
                       min="1900"
                       max={new Date().getFullYear()}
@@ -151,7 +152,7 @@ const Filters = ({ onChange }) => {
                     />
                     -
                     <input
-                      type="number"
+                      type="date"
                       name="yearMax"
                       min="1900"
                       max={new Date().getFullYear()}

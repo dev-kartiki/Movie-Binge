@@ -4,7 +4,6 @@ import { useAuth } from "./AuthContext";
 
 const PrivateRoute = ({ element: Element, ...rest }) => {
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
 
   return JSON.parse(isAuthenticated) ? (
     <Element {...rest} />

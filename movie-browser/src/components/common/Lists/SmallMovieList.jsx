@@ -1,9 +1,14 @@
 import React from "react";
-import MovieCard from "../../MovieCard";
-const SmallMovieList = ({ movie }) => {
+import MovieCard from "../../Movie/MovieCard";
+const SmallMovieList = ({ movie, favorite, removeFavorite }) => {
   return (
     <div>
-      <MovieCard key={movie.id} movie={movie} small={true} />
+      <MovieCard 
+        key={movie?.id || favorite?.id} 
+        movie={movie || favorite} 
+        small={true} 
+        removeFavorite={removeFavorite} 
+      />
     </div>
   );
 };

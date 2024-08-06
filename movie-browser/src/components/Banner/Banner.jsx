@@ -26,12 +26,12 @@ const Banner = ({ poster }) => {
               key={p.id}
             >
               <img
-                src={`https://image.tmdb.org/t/p/w500${p.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w500${p.backdrop_path}`}
                 className="d-block w-100 bg-dark p-4"
                 alt={p.title}
                 style={{ height: "60vh", objectFit: "fill" }}
               />
-              <div className="carousel-caption d-none d-md-block">
+              <div className="carousel-caption d-none d-md-block bg-dark rounded opacity-75">
                 <h5>{p.title}</h5>
                 <p>
                   {p.overview

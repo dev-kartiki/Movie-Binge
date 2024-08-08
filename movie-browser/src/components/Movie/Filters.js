@@ -141,7 +141,7 @@ const Filters = ({ onChange }) => {
                   <h4 className="font-semibold mb-2">Year Range</h4>
                   <div className="d-flex align-items-center">
                     <input
-                      type="date"
+                      type="number"
                       name="yearMin"
                       min="1900"
                       max={new Date().getFullYear()}
@@ -152,7 +152,7 @@ const Filters = ({ onChange }) => {
                     />
                     -
                     <input
-                      type="date"
+                      type="number"
                       name="yearMax"
                       min="1900"
                       max={new Date().getFullYear()}

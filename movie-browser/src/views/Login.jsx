@@ -36,13 +36,13 @@ const Login = () => {
           title: 'Login Successful',
           text: 'User exists. Logging in...',
           icon: 'success',
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
         auth.login(user);
         setTimeout(() => {
           navigate("/");
-        }, 3000);
+        }, 2000);
       } else {
         // Prompt to create a new account
         Swal.fire({

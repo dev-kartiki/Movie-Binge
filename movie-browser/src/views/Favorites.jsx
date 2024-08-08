@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RegularList from "../components/common/Lists/RegularList";
-import LargeMovieList from "../components/common/Lists/LargeMovieList";
 import SmallMovieList from "../components/common/Lists/SmallMovieList";
+import SEO from "../components/common/SEO/SEO"
 
 const FavoritesList = () => {
   const [favorites, setFavorites] = useState([]);
@@ -44,6 +44,10 @@ const FavoritesList = () => {
 
   return (
     <div className="container vh-100 bg-dark">
+      <SEO
+        title="Movie Browser - My Favorites"
+        description="Find your favorite movies here."
+      />
       <h1 className="text-white text-center">Favorites List</h1>
       <RegularList items={favorites} resourceName="favorite" itemComponent={(props) => <SmallMovieList  {...props} removeFavorite={removeFavorite} />} />
     </div>

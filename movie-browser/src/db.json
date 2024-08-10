@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "id": "5073",
+      "username": "kartiki",
+      "password": "123"
+    },
+    {
+      "id": "f54b",
+      "username": "test user",
+      "email": "Test@123.com",
+      "password": "Test@123"
+    },
+    {
+      "id": "708b",
+      "username": "test2",
+      "email": "Test@2.com",
+      "password": "Test@2"
+    },
+    {
+      "id": "785e",
+      "username": "test21",
+      "email": "Admin@123.com",
+      "password": "Test@21"
+    },
+    {
+      "id": "4466",
+      "username": "test121",
+      "email": "Test@123.com",
+      "password": "Test@21"
+    }
+  ]
+}

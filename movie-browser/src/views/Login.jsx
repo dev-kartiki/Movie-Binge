@@ -7,16 +7,17 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../components/AuthContext/AuthContext";
 
-// Validation schema
+// Validation schema for form input
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
 });
 
 const Login = () => {
-  const navigate = useNavigate();
-  const auth = useAuth();
+  const navigate = useNavigate(); // Hook to navigate programmatically
+  const auth = useAuth(); // Hook to get authentication context
 
+  // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Fetch existing users from JSON Server
@@ -27,11 +28,11 @@ const Login = () => {
       const user = users.find(
         (user) =>
           user.username === values.username &&
-          user.password === values.password,
+          user.password === values.password
       );
 
       if (user) {
-        // Handle existing user login logic
+        // User exists, log them in
         Swal.fire({
           title: 'Login Successful',
           text: 'User exists. Logging in...',
@@ -39,12 +40,12 @@ const Login = () => {
           timer: 2000,
           showConfirmButton: false,
         });
-        auth.login(user);
+        auth.login(user); // Perform login action
         setTimeout(() => {
-          navigate("/");
+          navigate("/"); // Redirect to home page after login
         }, 2000);
       } else {
-        // Prompt to create a new account
+        // User does not exist, prompt to create a new account
         Swal.fire({
           title: 'User not found',
           text: 'User does not exist. Please create an account.',
@@ -55,14 +56,14 @@ const Login = () => {
           cancelButtonText: 'Cancel',
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate("/create-account");
+            navigate("/create-account"); // Redirect to create account page
           }
         });
       }
 
-      setSubmitting(false);
+      setSubmitting(false); // Reset submitting state
     } catch (err) {
-      setSubmitting(false);
+      setSubmitting(false); // Reset submitting state on error
       Swal.fire({
         title: 'Error',
         text: 'Failed to process request. Please try again.',
@@ -95,6 +96,7 @@ const Login = () => {
                         id="username"
                         name="username"
                         className="form-control"
+                        aria-required="true" // ARIA attribute for required fields
                       />
                       <ErrorMessage
                         name="username"
@@ -109,6 +111,7 @@ const Login = () => {
                         id="password"
                         name="password"
                         className="form-control text-dark"
+                        aria-required="true" // ARIA attribute for required fields
                       />
                       <ErrorMessage
                         name="password"

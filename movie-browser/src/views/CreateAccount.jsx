@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-// Validation schema
+// Validation schema for the form fields
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
   email: Yup.string()
@@ -17,11 +17,12 @@ const validationSchema = Yup.object({
 });
 
 const CreateAccount = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
 
+  // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      // POST request to store new user information
+      // POST request to create a new user
       await axios.post("http://localhost:5000/users", values);
       Swal.fire({
         title: 'Success',
@@ -32,7 +33,7 @@ const CreateAccount = () => {
       });
       setSubmitting(false);
       setTimeout(() => {
-        navigate("/login");
+        navigate("/login"); // Redirect to login page
       }, 3000);
     } catch (err) {
       setSubmitting(false);
@@ -48,7 +49,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100 ">
+    <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="row w-100">
         <div className="col-md-8 col-lg-6 col-xl-4 mx-auto">
           <div className="card text-dark shadow-lg">
@@ -61,6 +62,7 @@ const CreateAccount = () => {
               >
                 {({ isSubmitting }) => (
                   <Form>
+                    {/* Username field */}
                     <div className="form-group">
                       <label htmlFor="username">Username:</label>
                       <Field
@@ -68,6 +70,7 @@ const CreateAccount = () => {
                         id="username"
                         name="username"
                         className="form-control text-dark"
+                        aria-required="true"
                       />
                       <ErrorMessage
                         name="username"
@@ -75,6 +78,7 @@ const CreateAccount = () => {
                         className="text-danger"
                       />
                     </div>
+                    {/* Email field */}
                     <div className="form-group mt-3">
                       <label htmlFor="email">Email:</label>
                       <Field
@@ -82,6 +86,7 @@ const CreateAccount = () => {
                         id="email"
                         name="email"
                         className="form-control text-dark"
+                        aria-required="true"
                       />
                       <ErrorMessage
                         name="email"
@@ -89,6 +94,7 @@ const CreateAccount = () => {
                         className="text-danger"
                       />
                     </div>
+                    {/* Password field */}
                     <div className="form-group mt-3">
                       <label htmlFor="password">Password:</label>
                       <Field
@@ -96,6 +102,7 @@ const CreateAccount = () => {
                         id="password"
                         name="password"
                         className="form-control text-dark"
+                        aria-required="true"
                       />
                       <ErrorMessage
                         name="password"
@@ -103,10 +110,12 @@ const CreateAccount = () => {
                         className="text-danger"
                       />
                     </div>
+                    {/* Submit button */}
                     <button
                       type="submit"
                       className="btn btn-primary mt-4 w-100"
                       disabled={isSubmitting}
+                      aria-live="polite" // Announce changes to screen readers
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </button>

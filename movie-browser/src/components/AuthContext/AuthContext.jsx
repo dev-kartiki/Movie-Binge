@@ -13,9 +13,6 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.getItem("isLoggedIn"),
   );
 
-  // State to store the user's role, if applicable (can be expanded as needed)
-  const [role, setRole] = useState("");
-
   // General state for any additional data you might need to manage globally
   const [state, setState] = useState();
 
@@ -61,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   return (
     // Provide the authentication state and functions to all children components
     <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, role, state, updateState }}
+      value={{ isAuthenticated, login, logout, state, updateState }}
     >
       {/* 
         Hidden element to announce authentication status changes.

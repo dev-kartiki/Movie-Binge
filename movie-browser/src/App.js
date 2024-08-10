@@ -6,11 +6,15 @@ import Page from "./Page";
 function App() {
   return (
     <div className="bg-dark">
+      {/* SEO Component for setting meta tags */}
       <SEO
         title="Movie Browser"
         description="Browse and search for your favorite movies."
       />
-      <Layout children={<Page />} />
+      {/* Layout component to wrap around the main content */}
+      <Layout>
+        <Page />
+      </Layout>
     </div>
   );
 }

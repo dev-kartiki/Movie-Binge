@@ -36,14 +36,14 @@ const Filters = ({ onChange }) => {
         .min(Yup.ref("yearMin"), "Max year cannot be less than min year.")
         .max(
           new Date().getFullYear(),
-          "Max year must be between 1900 and the current year.",
+          "Max year must be between 1900 and the current year."
         )
         .required("Required"),
       ratingMin: Yup.number()
         .min(0, "Min rating must be between 0 and 10.")
         .max(
           Yup.ref("ratingMax"),
-          "Min rating cannot be greater than max rating.",
+          "Min rating cannot be greater than max rating."
         )
         .required("Required"),
       ratingMax: Yup.number()
@@ -53,7 +53,7 @@ const Filters = ({ onChange }) => {
     }),
     onSubmit: (values) => {
       onChange({
-        with_genres: values.selectedGenres.join(","),
+        with_genres: values.selectedGenres?.join(","),
         "primary_release_date.gte": `${values.yearMin}-01-01`,
         "primary_release_date.lte": `${values.yearMax}-12-31`,
         "vote_average.gte": values.ratingMin,
@@ -67,7 +67,7 @@ const Filters = ({ onChange }) => {
       "selectedGenres",
       formik.values.selectedGenres.includes(genreId)
         ? formik.values.selectedGenres.filter((id) => id !== genreId)
-        : [...formik.values.selectedGenres, genreId],
+        : [...formik.values.selectedGenres, genreId]
     );
   };
 
@@ -83,6 +83,9 @@ const Filters = ({ onChange }) => {
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#filtersModal"
+        aria-controls="filtersModal"
+        aria-expanded="false"
+        aria-label="Open Filters Modal"
       >
         Open Filters
       </button>
@@ -109,108 +112,118 @@ const Filters = ({ onChange }) => {
             </div>
             <div className="modal-body">
               <form onSubmit={formik.handleSubmit}>
-                <div className="genres mb-4">
-                  <h4 className="font-semibold mb-2">Genres</h4>
-                  <div className="d-flex flex-wrap">
-                    {genres.map((genre) => (
-                      <div
-                        key={genre.id}
-                        className="form-check form-switch me-3 mb-2"
-                      >
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          value={genre.id}
-                          checked={formik.values.selectedGenres.includes(
-                            genre.id,
-                          )}
-                          onChange={() => handleGenreChange(genre.id)}
-                          id={`genre-${genre.id}`}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`genre-${genre.id}`}
+                <fieldset>
+                  <legend>Genres</legend>
+                  <div className="genres mb-4">
+                    <div className="d-flex flex-wrap">
+                      {genres.map((genre) => (
+                        <div
+                          key={genre.id}
+                          className="form-check form-switch me-3 mb-2"
                         >
-                          {genre.name}
-                        </label>
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value={genre.id}
+                            checked={formik.values.selectedGenres.includes(genre.id)}
+                            onChange={() => handleGenreChange(genre.id)}
+                            id={`genre-${genre.id}`}
+                            aria-labelledby={`label-genre-${genre.id}`}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor={`genre-${genre.id}`}
+                            id={`label-genre-${genre.id}`}
+                          >
+                            {genre.name}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>Year Range</legend>
+                  <div className="year-range mb-4">
+                    <div className="d-flex align-items-center">
+                      <input
+                        type="number"
+                        name="yearMin"
+                        min="1900"
+                        max={new Date().getFullYear()}
+                        value={formik.values.yearMin}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`form-control me-2 ${formik.touched.yearMin && formik.errors.yearMin ? "is-invalid" : ""}`}
+                        aria-describedby="yearMinError"
+                      />
+                      -
+                      <input
+                        type="number"
+                        name="yearMax"
+                        min="1900"
+                        max={new Date().getFullYear()}
+                        value={formik.values.yearMax}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`form-control ms-2 ${formik.touched.yearMax && formik.errors.yearMax ? "is-invalid" : ""}`}
+                        aria-describedby="yearMaxError"
+                      />
+                    </div>
+                    {formik.touched.yearMin && formik.errors.yearMin ? (
+                      <div id="yearMinError" className="invalid-feedback d-block">
+                        {formik.errors.yearMin}
                       </div>
-                    ))}
+                    ) : null}
+                    {formik.touched.yearMax && formik.errors.yearMax ? (
+                      <div id="yearMaxError" className="invalid-feedback d-block">
+                        {formik.errors.yearMax}
+                      </div>
+                    ) : null}
                   </div>
-                </div>
-                <div className="year-range mb-4 ">
-                  <h4 className="font-semibold mb-2">Year Range</h4>
-                  <div className="d-flex align-items-center">
-                    <input
-                      type="number"
-                      name="yearMin"
-                      min="1900"
-                      max={new Date().getFullYear()}
-                      value={formik.values.yearMin}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={`form-control me-2 ${formik.touched.yearMin && formik.errors.yearMin ? "is-invalid" : ""}`}
-                    />
-                    -
-                    <input
-                      type="number"
-                      name="yearMax"
-                      min="1900"
-                      max={new Date().getFullYear()}
-                      value={formik.values.yearMax}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={`form-control ms-2 ${formik.touched.yearMax && formik.errors.yearMax ? "is-invalid" : ""}`}
-                    />
+                </fieldset>
+                <fieldset>
+                  <legend>Rating Range</legend>
+                  <div className="rating-range mb-4">
+                    <div className="d-flex align-items-center">
+                      <input
+                        type="number"
+                        name="ratingMin"
+                        min="0"
+                        max="10"
+                        step="0.1"
+                        value={formik.values.ratingMin}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`form-control me-2 ${formik.touched.ratingMin && formik.errors.ratingMin ? "is-invalid" : ""}`}
+                        aria-describedby="ratingMinError"
+                      />
+                      -
+                      <input
+                        type="number"
+                        name="ratingMax"
+                        min="0"
+                        max="10"
+                        step="0.1"
+                        value={formik.values.ratingMax}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        className={`form-control ms-2 ${formik.touched.ratingMax && formik.errors.ratingMax ? "is-invalid" : ""}`}
+                        aria-describedby="ratingMaxError"
+                      />
+                    </div>
+                    {formik.touched.ratingMin && formik.errors.ratingMin ? (
+                      <div id="ratingMinError" className="invalid-feedback d-block">
+                        {formik.errors.ratingMin}
+                      </div>
+                    ) : null}
+                    {formik.touched.ratingMax && formik.errors.ratingMax ? (
+                      <div id="ratingMaxError" className="invalid-feedback d-block">
+                        {formik.errors.ratingMax}
+                      </div>
+                    ) : null}
                   </div>
-                  {formik.touched.yearMin && formik.errors.yearMin ? (
-                    <div className="invalid-feedback d-block">
-                      {formik.errors.yearMin}
-                    </div>
-                  ) : null}
-                  {formik.touched.yearMax && formik.errors.yearMax ? (
-                    <div className="invalid-feedback d-block">
-                      {formik.errors.yearMax}
-                    </div>
-                  ) : null}
-                </div>
-                <div className="rating-range mb-4">
-                  <h4 className="font-semibold mb-2">Rating Range</h4>
-                  <div className="d-flex align-items-center">
-                    <input
-                      type="number"
-                      name="ratingMin"
-                      min="0"
-                      max="10"
-                      step="0.1"
-                      value={formik.values.ratingMin}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={`form-control me-2 ${formik.touched.ratingMin && formik.errors.ratingMin ? "is-invalid" : ""}`}
-                    />
-                    -
-                    <input
-                      type="number"
-                      name="ratingMax"
-                      min="0"
-                      max="10"
-                      step="0.1"
-                      value={formik.values.ratingMax}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={`form-control ms-2 ${formik.touched.ratingMax && formik.errors.ratingMax ? "is-invalid" : ""}`}
-                    />
-                  </div>
-                  {formik.touched.ratingMin && formik.errors.ratingMin ? (
-                    <div className="invalid-feedback d-block">
-                      {formik.errors.ratingMin}
-                    </div>
-                  ) : null}
-                  {formik.touched.ratingMax && formik.errors.ratingMax ? (
-                    <div className="invalid-feedback d-block">
-                      {formik.errors.ratingMax}
-                    </div>
-                  ) : null}
-                </div>
+                </fieldset>
                 <div className="modal-footer">
                   <button
                     type="button"

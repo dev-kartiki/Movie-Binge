@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RegularList from "../components/common/Lists/RegularList";
 import SmallMovieList from "../components/common/Lists/SmallMovieList";
-import SEO from "../components/common/SEO/SEO"
+import SEO from "../components/common/SEO/SEO";
 
 const FavoritesList = () => {
-  const [favorites, setFavorites] = useState([]);
-  const [user, setUser] = useState(null);
+  const [favorites, setFavorites] = useState([]); // State to store favorite movies
+  const [user, setUser] = useState(null); // State to store user information
 
   useEffect(() => {
     // Retrieve logged-in user information from session storage
@@ -13,8 +13,8 @@ const FavoritesList = () => {
     setUser(loggedInUser);
 
     if (loggedInUser) {
+      // Retrieve and filter favorites from local storage
       const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-      // Find the user's favorites list
       const userFavorites = savedFavorites.find(fav => fav.userId === loggedInUser.id);
       if (userFavorites) {
         setFavorites(userFavorites.movies || []);
@@ -22,6 +22,7 @@ const FavoritesList = () => {
     }
   }, []);
 
+  // Function to remove a movie from favorites
   const removeFavorite = (movieId) => {
     const updatedFavorites = favorites.filter((movie) => movie.id !== movieId);
     setFavorites(updatedFavorites);
@@ -49,7 +50,11 @@ const FavoritesList = () => {
         description="Find your favorite movies here."
       />
       <h1 className="text-white text-center">Favorites List</h1>
-      <RegularList items={favorites} resourceName="favorite" itemComponent={(props) => <SmallMovieList  {...props} removeFavorite={removeFavorite} />} />
+      <RegularList
+        items={favorites}
+        resourceName="favorite"
+        itemComponent={(props) => <SmallMovieList {...props} removeFavorite={removeFavorite} />}
+      />
     </div>
   );
 };

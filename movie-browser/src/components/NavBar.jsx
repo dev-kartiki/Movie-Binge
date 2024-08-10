@@ -5,11 +5,11 @@ import Logout from "../views/Logout";
 
 const NavBar = () => {
   const { isAuthenticated } = useAuth(); // Use AuthContext to get authentication status
-  
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main Navigation">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+        <a className="navbar-brand" href="/" aria-label="Homepage">
           <img
             src={logo}
             alt="Movie Binge Logo"
@@ -43,10 +43,10 @@ const NavBar = () => {
               </a>
             </li>
           </ul>
-          <ul>
+          <ul className="navbar-nav ms-auto">
             {!isAuthenticated ? (
               <li className="nav-item">
-                <a className="btn btn-outline-light" href="/login">
+                <a className="btn btn-outline-light" href="/login" aria-label="Login">
                   Login
                 </a>
               </li>

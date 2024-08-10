@@ -1,11 +1,12 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min"; // Ensure this line is included to load Bootstrap JS
 
 const Banner = ({ poster }) => {
+
+  // Shows top rated movie posters in a slider carousal.
   return (
     <div className="w-100 h-75 mt-4">
-      <div id="carouselExampleCaptions" className="carousel slide">
+      <div id="carouselExampleCaptions" className="carousel slide" aria-label="Movie Carousel">
         <div className="carousel-indicators">
           {poster.map((_, index) => (
             <button
@@ -19,7 +20,7 @@ const Banner = ({ poster }) => {
             ></button>
           ))}
         </div>
-        <div className="carousel-inner">
+        <div className="carousel-inner" role="listbox">
           {poster.map((p, index) => (
             <div
               className={`carousel-item ${index === 0 ? "active" : ""}`}
@@ -27,11 +28,16 @@ const Banner = ({ poster }) => {
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${p.backdrop_path}`}
-                className="d-block w-100 bg-dark p-4"
+                className="d-block w-100"
                 alt={p.title}
                 style={{ height: "60vh", objectFit: "fill" }}
               />
-              <div className="carousel-caption d-none d-md-block bg-dark rounded opacity-75">
+              <div
+                className="carousel-caption d-none d-md-block bg-dark rounded p-2"
+                style={{ color: "white", opacity: 0.85 }}
+                role="region"
+                aria-label={`${p.title} Overview`}
+              >
                 <h5>{p.title}</h5>
                 <p>
                   {p.overview
@@ -47,6 +53,7 @@ const Banner = ({ poster }) => {
           type="button"
           data-bs-target="#carouselExampleCaptions"
           data-bs-slide="prev"
+          aria-label="Previous slide"
         >
           <span
             className="carousel-control-prev-icon"
@@ -59,6 +66,7 @@ const Banner = ({ poster }) => {
           type="button"
           data-bs-target="#carouselExampleCaptions"
           data-bs-slide="next"
+          aria-label="Next slide"
         >
           <span
             className="carousel-control-next-icon"

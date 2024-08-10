@@ -13,8 +13,10 @@ const MovieSearch = () => {
   const [filters, setFilters] = useState({});
   const [showBackToTop, setShowBackToTop] = useState(false);
 
+  // Debounce filters to optimize API calls
   const debouncedFilters = useDebounce(filters, 500); // 500ms debounce delay
 
+  // Fetch movies when query, filters, or page changes
   useEffect(() => {
     if (query) {
       searchMovies();
@@ -23,6 +25,7 @@ const MovieSearch = () => {
     }
   }, [query, debouncedFilters, page]);
 
+  // Function to search for movies based on the query
   const searchMovies = async () => {
     try {
       const response = await searchMovie(query, page, debouncedFilters);
@@ -36,8 +39,8 @@ const MovieSearch = () => {
       console.error("Error fetching movies:", error);
     }
   };
-  
 
+  // Function to discover movies with current filters
   const discoverMovies = async () => {
     try {
       const response = await discoverMovie(page, debouncedFilters);
@@ -52,20 +55,23 @@ const MovieSearch = () => {
     }
   };
 
+  // Update query state and reset pagination when search input changes
   const handleSearch = (e) => {
     setQuery(e.target.value);
-    setMovies([]);
-    setPage(1);
-    setHasMore(true);
+    setMovies([]); // Clear current movies
+    setPage(1); // Reset page to first page
+    setHasMore(true); // Reset hasMore to true
   };
 
+  // Update filters and reset pagination when filters change
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setMovies([]);
-    setPage(1);
-    setHasMore(true);
+    setMovies([]); // Clear current movies
+    setPage(1); // Reset page to first page
+    setHasMore(true); // Reset hasMore to true
   };
 
+  // Handle scroll events to show "Back to Top" button and load more movies
   const handleScroll = () => {
     const scrollTop = window.scrollY;
     const windowHeight = window.innerHeight;
@@ -85,6 +91,7 @@ const MovieSearch = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore]);
 
+  // Scroll to the top of the page smoothly
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -103,7 +110,7 @@ const MovieSearch = () => {
             onChange={handleSearch}
             placeholder="Search for a movie"
             aria-label="Search for a movie"
-            aria-describedby="basic-addon1"
+            aria-describedby="search-addon"
           />
         </div>
         <div className="col-auto d-flex align-items-center">

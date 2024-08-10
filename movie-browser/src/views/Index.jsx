@@ -4,7 +4,7 @@ import Home from "./Home";
 const Index = () => {
   return (
     <>
-      <Home />
+      <Home /> {/* Render the Home component */}
     </>
   );
 };

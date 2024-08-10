@@ -6,9 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
+
+Installs all the dependencies required for the project.
+
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
@@ -68,3 +72,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Additional Steps
+
+To start the app:
+1. Run `npm install` to install all dependencies.
+2. Run `npm start` to start the development server.
+
+To start the JSON server:
+1. Ensure you have `json-server` installed globally (`npm install -g json-server`).
+2. Run `json-server --watch db.json --port 5000` to start the server, which will watch for changes in the `db.json` file and serve it on port 5000. Go to directory which has db.json file. Here /src and then run the command.

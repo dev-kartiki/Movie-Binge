@@ -1,11 +1,23 @@
 import React from "react";
-import MovieCard from "../../MovieCard";
+import MovieCard from "../../Movie/MovieCard";
 
-const LargeMovieList = ({ movie }) => {
+const LargeMovieList = ({ movie, favorite, removeFavorite }) => {
+  // Determine which movie data to display: either from the movie prop or the favorite prop
+  const movieData = movie || favorite;
+
   return (
-    <div style={{ margin: "20px" }}>
-      <MovieCard key={movie.id} movie={movie} large={true} />
-    </div>
+    <>
+      {/* 
+        Render the MovieCard component, passing the movie data, 
+        a flag to indicate it's a large card, and a function to remove the favorite 
+      */}
+      <MovieCard 
+        key={movieData?.id} 
+        movie={movieData} 
+        large={true} 
+        removeFavorite={removeFavorite} 
+      />
+    </>
   );
 };
 
